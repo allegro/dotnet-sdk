@@ -1,0 +1,38 @@
+<Project>
+
+    <PropertyGroup Label="Target Platforms" >
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Project Settings" >
+        <Platforms>AnyCPU</Platforms>
+        <TargetPlatform>AnyCPU</TargetPlatform>
+        <ErrorReport>prompt</ErrorReport>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <NoWarn>$(NoWarn);NU5128;SA0001</NoWarn>
+        <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Build Output" >
+        <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+        <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
+        <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet Properties">
+        <Authors>Allegro</Authors>
+        <Company>Allegro</Company>
+        <Copyright>© Allegro. All rights reserved.</Copyright>
+        <Description>$(MSBuildProjectName)</Description>
+        <Tags>Allegro</Tags>
+    </PropertyGroup>
+    
+</Project>

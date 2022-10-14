@@ -1,0 +1,73 @@
+<Project>
+    <PropertyGroup Label="Target Platforms">
+        <NetCoreVersions>net6.0</NetCoreVersions>
+        <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
+        <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
+        <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
+    </PropertyGroup>
+    
+    <PropertyGroup Label="Project Settings">
+        <LangVersion>latest</LangVersion>
+        <AnalysisMode>Recommended</AnalysisMode>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <!-- Documentation can be enforced per-project -->
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Build Output">
+        <RepoRoot Condition="'$(RepoRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'global.json'))</RepoRoot>
+        <BaseOutputPath>$(RepoRoot)\bin\$(MSBuildProjectName)</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(RepoRoot)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+        <PackageOutputPath>$(RepoRoot)\nuget</PackageOutputPath>
+    </PropertyGroup>
+    
+    <ItemGroup Label="StyleCop" Condition="'$(AllegroDotnetSdkEnableStyleCop)' != false">
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json"/>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435"> <!-- need to use beta version to get the latest fixes -->
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Label="AsyncFixer" Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' != false">
+        <PackageReference Include="AsyncFixer" Version="1.6.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup Label="Meziantou" Condition="'$(AllegroDotnetSdkEnableMeziantou)' != false">
+        <PackageReference Include="Meziantou.Analyzer" Version="1.0.720">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Label="Global editor config" Condition="'$(AllegroDotnetSdkDisableGlobalEditorConfig)' != true">
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig"/>
+        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
+    </ItemGroup>
+
+    <PropertyGroup Label="Properties dedicated for test projects" Condition="$(MSBuildProjectDirectory.Contains(`test`))">
+        <!-- Exclude analyzer warnings in test projects -->
+        <!-- CA1707: Identifiers should not contain underscores -->
+        <NoWarn>$(NoWarn);CA1707</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" !$(MSBuildProjectDirectory.Contains(`test`)) ">
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <!-- SourceLink configuration -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>
+            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
+        </AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    
+</Project>

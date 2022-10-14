@@ -1,0 +1,19 @@
+name: Build Allegro.DotnetSdk
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/DotnetSdk/**'
+      - 'src/*'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/DotnetSdk/**'
+      - 'src/*'
+
+jobs:
+  ci:
+    uses: ./.github/workflows/template.yml
+    with:
+      projectName: Allegro.DotnetSdk

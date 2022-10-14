@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.Build.NoTargets">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <BuildOutputTargetFolder>build\</BuildOutputTargetFolder>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageType>MSBuildSdk</PackageType>
+    <Description>Allegro Dotnet SDK</Description>
+    <PackageTags>MSBuild MSBuildSdk</PackageTags>
+    <Version>1.0.1</Version>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+</Project>

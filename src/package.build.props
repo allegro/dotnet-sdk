@@ -1,0 +1,20 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <Authors>Allegro</Authors>
+    <Company>Allegro</Company>
+    <Copyright>Copyright 2022 Allegro Group</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/allegro/dotnet-sdk</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)$(MSBuildProjectName)\README.md" Pack="true" PackagePath="\"/>
+    <None Include="$(MSBuildThisFileDirectory)$(MSBuildProjectName)\CHANGELOG.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>
