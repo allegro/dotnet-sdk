@@ -46,7 +46,7 @@ jobs:
       if: inputs.publish
       run: |
         TAG_NAME=${{ inputs.tagName }}
-        VERSION=${TAG_NAME##*_}
+        VERSION=${TAG_NAME##*v}
         NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
         echo "::set-output name=filename::$NUPKG"
         if [ ! -f package/$NUPKG ]; then
