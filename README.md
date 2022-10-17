@@ -28,7 +28,7 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
       "rollForward": "latestFeature"
     },
     "msbuild-sdks": {
-        "Allegro.DotnetSdk": "1.0.1"
+        "Allegro.DotnetSdk": "1.0.2"
     }
 }
 
