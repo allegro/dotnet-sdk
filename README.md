@@ -22,8 +22,7 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
 
 ```json
 {
-    "sdk":
-    {
+    "sdk": {
       "version": "6.0.100",
       "rollForward": "latestFeature"
     },
