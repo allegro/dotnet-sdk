@@ -104,7 +104,7 @@ More about the analyzer and editor config files can be found in [the docs](https
 ### Rider  
 
 Make sure you have enabled:
-- Preferences -> Editor -> Code Style -> Enable StyleCop support
+- Preferences -> Editor -> Code Style -> Enable StyleCop support (Ruleset files)
 - Preferences -> Editor -> Code Style -> Enable EditorConfig support
 - Preferences -> Editor -> Inspection Settings -> Read settings from editorconfig, project settings and rule sets
 - Preferences -> Editor -> Inspection Settings -> Roslyn -> Enable Roslyn analyzers and Source Generators
