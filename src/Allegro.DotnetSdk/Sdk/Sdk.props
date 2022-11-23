@@ -48,8 +48,7 @@
     </ItemGroup>
 
     <ItemGroup Label="Global editor config" Condition="'$(AllegroDotnetSdkDisableGlobalEditorConfig)' != true">
-        <AdditionalFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig"/>
-        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
+        <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
     </ItemGroup>
 
     <PropertyGroup Label="Properties dedicated for test projects" Condition="$(MSBuildProjectDirectory.Contains(`test`))">

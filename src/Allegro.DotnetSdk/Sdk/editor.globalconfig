@@ -214,6 +214,7 @@ csharp_style_expression_bodied_operators = false:none
 csharp_style_expression_bodied_properties = true:error
 csharp_style_expression_bodied_indexers = true:error
 csharp_style_expression_bodied_accessors = true:error
+csharp_style_expression_bodied_local_functions = true:error    
 
 # Suggest more modern language features when available
 csharp_style_pattern_matching_over_is_with_cast_check = true:error
@@ -251,8 +252,19 @@ csharp_prefer_braces = true:silent
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
+# ReSharper properties
+resharper_csharp_wrap_after_declaration_lpar = true
+resharper_csharp_wrap_after_invocation_lpar = true
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_csharp_wrap_parameters_style = chop_if_long
+resharper_local_function_body = expression_body
+resharper_place_simple_embedded_statement_on_same_line = false
+
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = warning
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
 
 # SA0001: All diagnostics of XML documentation comments has been disabled due to the current project configuration.
 dotnet_diagnostic.SA0001.severity = suggestion
