@@ -8,5 +8,6 @@
     <Description>Allegro Dotnet SDK</Description>
     <PackageTags>MSBuild MSBuildSdk</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageVersion>1.0.3</PackageVersion>
   </PropertyGroup>
 </Project>
