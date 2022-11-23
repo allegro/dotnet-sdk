@@ -99,6 +99,20 @@ Its entries can be also overridden by entries from `.editorconfig`. Such editor 
 
 More about the analyzer and editor config files can be found in [the docs](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files).
 
+## IDEs support
+
+### Rider  
+
+Make sure you have enabled:
+- Preferences -> Editor -> Code Style -> Enable StyleCop support
+- Preferences -> Editor -> Code Style -> Enable EditorConfig support
+- Preferences -> Editor -> Inspection Settings -> Read settings from editorconfig, project settings and rule sets
+- Preferences -> Editor -> Inspection Settings -> Roslyn -> Enable Roslyn analyzers and Source Generators
+- Preferences -> Editor -> Inspection Settings -> Roslyn -> Include Roslyn analyzers in Solution-Wide Analysis
+
+**Be aware!**
+Only some analyzers's warnings can be addressed by auto-format or code cleanup. Some of the warnings are not covered by Rider, and its settings need to be adjusted.  
+For that, in editor.globalconfig is `# ReSharper properties` section with some already defined settings which align with analyzers. If you find some inconsistency and you find appropriate settings in Rider, which will fix it - please, contribute! :) 
 ## License
 Copyright 2022 Allegro Group
 
