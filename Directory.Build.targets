@@ -5,7 +5,6 @@
     <None Include="Sdk\**"
           Pack="true"
           PackagePath="Sdk\" />
-    <None Include="version.json" />
     <None Include="$(PackageIconPath)"
           Pack="true"
           PackagePath="\"
