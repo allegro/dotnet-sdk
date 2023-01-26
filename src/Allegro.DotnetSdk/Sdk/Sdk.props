@@ -47,6 +47,14 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup Label="NRT configuration" Condition=" '$(Configuration)' == 'Debug' AND '$(Nullable)' == 'enable' AND '$(AllegroDotnetSdkEnableSmartAnalyzers)' != false ">
+        <PackageReference Include="SmartAnalyzers.CSharpExtensions.Annotations" Version="4.2.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <AssemblyAttribute Include="SmartAnalyzers.CSharpExtensions.Annotations.InitRequiredForNotNullAttribute" />
+    </ItemGroup>
+
     <ItemGroup Label="Global editor config" Condition="'$(AllegroDotnetSdkDisableGlobalEditorConfig)' != true">
         <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
     </ItemGroup>
