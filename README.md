@@ -23,11 +23,11 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
 ```json
 {
     "sdk": {
-      "version": "6.0.100",
+      "version": "6.0.405",
       "rollForward": "latestFeature"
     },
     "msbuild-sdks": {
-        "Allegro.DotnetSdk": "1.0.2"
+        "Allegro.DotnetSdk": "1.2.0"
     }
 }
 
@@ -37,11 +37,24 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
 The `Directory.Build.props` file should be updated in order to actually import the SDK:
 
 ```xml
-<Project Sdk="Allegro.DotnetSdk">
+<Project>
+    <Import Project="Sdk.props" Sdk="Allegro.DotnetSdk" />
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>$(NetCoreVersions)</TargetFramework>
     </PropertyGroup>
     
+    <!-- other project-specific properties -->
+</Project>
+```
+
+### Directory.Build.targets
+
+The `Directory.Build.targets` file should be updated in order to actually import the SDK:
+
+```xml
+<Project>
+    <Import Project="Sdk.targets" Sdk="Allegro.DotnetSdk"/>
+
     <!-- other project-specific properties -->
 </Project>
 ```
@@ -62,9 +75,10 @@ In order to override or disable some of the imported components, the behavior ch
 
 * `Directory.Build.props` - repo wide:
 ```xml
-<Project Sdk="Allegro.DotnetSdk">
+<Project>
+    <Import Project="Sdk.props" Sdk="Allegro.DotnetSdk" />
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>$(NetCoreVersions)</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -83,7 +97,6 @@ In order to override or disable some of the imported components, the behavior ch
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
