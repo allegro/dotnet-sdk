@@ -13,10 +13,14 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>disable</ImplicitUsings>
+        <ImplicitUsings>enable</ImplicitUsings>
         <!-- Documentation can be enforced per-project -->
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
+
+    <ItemGroup Label="ImplicitUsings additional includes">
+        <Using Include="System.Collections.Immutable" />
+    </ItemGroup>
 
     <PropertyGroup Label="Build Output">
         <RepoRoot Condition="'$(RepoRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'global.json'))</RepoRoot>
