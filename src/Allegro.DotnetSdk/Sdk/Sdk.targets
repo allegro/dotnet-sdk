@@ -12,5 +12,6 @@
     -->
     <ItemGroup Label="ImplicitUsings additional removes">
         <Using Remove="Microsoft.Extensions.Logging" />
+        <Using Remove="System.Net.Http" />
     </ItemGroup>
 </Project>
