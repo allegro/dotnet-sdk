@@ -10,12 +10,13 @@
         <LangVersion>latest</LangVersion>
         <AnalysisMode>Recommended</AnalysisMode>
         <AnalysisLevel>latest</AnalysisLevel>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <!-- Documentation can be enforced per-project -->
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <!-- Some devs might want to turn off errors for warning for local development -->
+        <TreatWarningsAsErrors Condition=" '$(TreatWarningsAsErrors)' != 'false' ">true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup Label="ImplicitUsings additional includes">
