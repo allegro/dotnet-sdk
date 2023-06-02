@@ -160,7 +160,7 @@ dotnet_diagnostic.CA1822.severity = warning
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = none
 
-# SA1122:Use string.Empty for empty strings
+# SA1122: Use string.Empty for empty strings
 dotnet_diagnostic.SA1122.severity = none
 
 # IDE0005: Using directive is unnecessary
