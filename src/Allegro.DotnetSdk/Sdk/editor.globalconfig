@@ -157,6 +157,12 @@ dotnet_diagnostic.CA1716.severity = suggestion
 # CA1822: Make member static
 dotnet_diagnostic.CA1822.severity = warning
 
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
+# SA1122: Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = none
+
 # IDE0005: Using directive is unnecessary
 dotnet_diagnostic.IDE0005.severity = warning
 
