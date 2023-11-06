@@ -1,0 +1,17 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dotnet-sdk
+  description: "The Allegro .NET SDK provides common and importable project settings, such as build properties, coding styles, analyzers configuration etc."
+  title: Allegro .NET SDK
+  annotations:
+    # backstage.io/techdocs-ref: dir:. #TODO: if you want  to support docs in backstage uncomment this and add mkdocs files ex. https://dev.azure.com/AllegroTechies/AllegroPay.DevOps/_git/ops-backstage-platform?path=/mkdocs.yml&_a=contents&version=GBmain
+    allegropay/entity-updated-at: '2023-11-03T08:15'
+    github.com/project-slug: allegro/dotnet-sdk
+  links: []
+spec:
+  type: library
+  owner: aard
+  lifecycle: production
+  system: application-platform
