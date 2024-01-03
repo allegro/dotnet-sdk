@@ -2,6 +2,7 @@
 .ionide/
 App_Data/
 packages/
+package/
 obj/
 bin/
 build/

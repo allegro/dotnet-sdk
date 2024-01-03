@@ -1,0 +1,45 @@
+<Project>
+
+  <!-- Setup this SDKs defaults -->
+  <PropertyGroup>
+    <!-- Enable default analyzers if CPM is not used. -->
+    <UseAllegroDotnetSdkDefaultAnalyzers Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == '' AND '$(ManagePackageVersionsCentrally)' != 'true'">true</UseAllegroDotnetSdkDefaultAnalyzers>
+    <AllegroDotnetSdkEnableGlobalEditorConfig Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == ''">true</AllegroDotnetSdkEnableGlobalEditorConfig>
+    <AllegroDotnetSdkEnableImplicitUsingsAdjustments Condition="'$(AllegroDotnetSdkEnableImplicitUsingsAdjustments)' == ''">true</AllegroDotnetSdkEnableImplicitUsingsAdjustments>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == 'true'">
+    <AllegroDotnetSdkEnableAsyncFixer Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' == ''">true</AllegroDotnetSdkEnableAsyncFixer>
+    <AllegroDotnetSdkEnableMeziantou Condition="'$(AllegroDotnetSdkEnableMeziantou)' == ''">true</AllegroDotnetSdkEnableMeziantou>
+    <AllegroDotnetSdkEnableStyleCop Condition="'$(AllegroDotnetSdkEnableStyleCop)' == ''">true</AllegroDotnetSdkEnableStyleCop>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsPackable)' != 'false' AND '$(IsTestProject)' != 'true'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- SourceLink configuration -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == 'true'" />
+  </ItemGroup>
+
+  <Import Project="UseDefaultAnalyzers.targets" Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == 'true'" />
+
+  <ItemGroup Label="ImplicitUsings adjustments" Condition="'$(AllegroDotnetSdkEnableImplicitUsingsAdjustments)' == 'true'">
+    <!-- Add Immutable as we often use them -->
+    <Using Include="System.Collections.Immutable" />
+    <!-- Remove Logging because it conflicts with Serilog which we use by default -->
+    <Using Remove="Microsoft.Extensions.Logging" />
+    <!-- Remove Http because we want to explicitly enforce devs to think twice before using System.Net.Http -->
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+
+</Project>

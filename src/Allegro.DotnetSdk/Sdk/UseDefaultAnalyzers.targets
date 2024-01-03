@@ -1,0 +1,27 @@
+<Project>
+
+  <ItemGroup Label="StyleCop" Condition="'$(AllegroDotnetSdkEnableStyleCop)' == 'true'">
+    <!-- https://github.com/DotNetAnalyzers/StyleCopAnalyzers -->
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435"> <!-- need to use beta version to get the latest fixes -->
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Label="AsyncFixer" Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' == 'true'">
+    <!-- https://github.com/semihokur/AsyncFixer -->
+    <PackageReference Include="AsyncFixer" Version="1.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Label="Meziantou" Condition="'$(AllegroDotnetSdkEnableMeziantou)' == 'true'">
+    <!-- https://github.com/meziantou/Meziantou.Analyzer -->
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.734">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

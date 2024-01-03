@@ -436,12 +436,3 @@ dotnet_diagnostic.MA0056.severity = suggestion
 
 # MA0074: Avoid implicit culture-sensitive methods
 dotnet_diagnostic.MA0074.severity = suggestion
-
-# Use the return value or discard
-dotnet_diagnostic.CSE005.severity = none 
-
-# Untangle complex expressions
-dotnet_diagnostic.CSE006.severity = none 
-
-# Handle disposal properly
-dotnet_diagnostic.CSE007.severity = none 

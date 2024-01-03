@@ -1,17 +1,9 @@
-<Project>
-    <!-- Empty file prevents accidental inclusion of files from directories above -->
+<Project InitialTargets="AllegroDotnetSdkValidation">
 
-    <!-- 
-    According to https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2022#import-order,
-    Directory.Build.props is imported very early. If the global using System.Net.Http
-    is added by some file that is imported later, then the Remove in Directory.Build.props
-    cannot affect the item that does not exist yet. It'd work better
-    in Directory.Build.targets.
-    
-    More: https://stackoverflow.com/questions/52866794/why-doesnt-directory-build-props-work-when-building-a-solution-using-visual-stu
-    -->
-    <ItemGroup Label="ImplicitUsings additional removes">
-        <Using Remove="Microsoft.Extensions.Logging" />
-        <Using Remove="System.Net.Http" />
-    </ItemGroup>
+  <Target Name="AllegroDotnetSdkValidation">
+    <Error
+      Text="Allegro.DotnetSdk requires .NET SDK v8.0.100+ to be used, but $(NETCoreSdkVersion) was found."
+      Condition="$([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '8.0'))" />
+  </Target>
+
 </Project>
