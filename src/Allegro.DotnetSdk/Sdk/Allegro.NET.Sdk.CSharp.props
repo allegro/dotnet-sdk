@@ -1,0 +1,27 @@
+<Project>
+  <!-- This file configures C#-specific options -->
+
+  <PropertyGroup>
+    <AllegroDotnetSdkEnableImplicitUsingsAdjustments Condition="'$(AllegroDotnetSdkEnableImplicitUsingsAdjustments)' == ''">true</AllegroDotnetSdkEnableImplicitUsingsAdjustments>
+    <Nullable Condition="'$(Nullable)' == ''">enable</Nullable>
+    <ImplicitUsings Condition="'$(AllegroDotnetSdkEnableImplicitUsingsAdjustments)' == 'true' And '$(ImplicitUsings)' == ''">enable</ImplicitUsings>
+    <AnalysisLevel Condition="'$(AnalysisLevel)' == ''">latest-Recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild Condition="'$(EnforceCodeStyleInBuild)' == ''">true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <!-- XML documentation adjustments -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnableXmlDocAdjustments)' == 'true'">
+    <!-- Never mark missing docs as errors -->
+    <!-- CS1591: Missing XML comment for publicly visible type or member -->
+    <WarningsNotAsErrors Condition="'$(GenerateDocumentationFile)' == 'true'">$(WarningsNotAsErrors);CS1591</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!-- Exclude selected warnings in test projects -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains(`Tests`))">
+    <!-- CA1707: Identifiers should not contain underscores -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+    <!-- CS1591: Missing XML comment for publicly visible type or member -->
+    <NoWarn Condition="'$(GenerateDocumentationFile)' == 'true' And '$(AllegroDotnetSdkEnableXmlDocAdjustments)' == 'true'">$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+</Project>

@@ -9,6 +9,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,10 +17,6 @@
     <None Include="$(MSBuildThisFileDirectory)$(PackageLicenseFile)" Pack="true" PackagePath="" />
     <!-- <None Include="$(MSBuildThisFileDirectory)$(PackageIconPath)" Pack="true" PackagePath="" Visible="false" /> -->
     <!-- <None Include="$(MSBuildThisFileDirectory)CHANGELOG.md" Pack="true" PackagePath=""/> -->
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

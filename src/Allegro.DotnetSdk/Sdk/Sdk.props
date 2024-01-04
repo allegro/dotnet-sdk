@@ -9,11 +9,11 @@
     <!--
       Import our custom props just after Directory.Build.props is imported, but before Microsoft.NET.Sdk.props
     -->
-    <CustomAfterDirectoryBuildProps>$(CustomAfterDirectoryBuildProps);$(MSBuildThisFileDirectory)UseAllegroDotnetSdkDefaults.props</CustomAfterDirectoryBuildProps>
+    <CustomAfterDirectoryBuildProps>$(CustomAfterDirectoryBuildProps);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.props</CustomAfterDirectoryBuildProps>
     <!--
       Import our custom targets after Directory.Build.targets is imported
     -->
-    <CustomBeforeDirectoryBuildTargets>$(CustomBeforeDirectoryBuildTargets);$(MSBuildThisFileDirectory)UseAllegroDotnetSdkDefaults.targets</CustomBeforeDirectoryBuildTargets>
+    <CustomBeforeDirectoryBuildTargets>$(CustomBeforeDirectoryBuildTargets);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.targets</CustomBeforeDirectoryBuildTargets>
   </PropertyGroup>
 
   <!--

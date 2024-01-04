@@ -1,0 +1,25 @@
+<Project>
+  <!-- This file configures language-independent options -->
+
+  <!-- Setup this SDKs defaults -->
+  <PropertyGroup>
+    <AllegroDotnetSdkEnableXmlDocAdjustments Condition="'$(AllegroDotnetSdkEnableXmlDocAdjustments)' == ''">true</AllegroDotnetSdkEnableXmlDocAdjustments>
+  </PropertyGroup>
+
+  <!-- Warnings as Errors -->
+  <PropertyGroup>
+    <!-- Some devs want Warnings as Errors in local IDE development -->
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' And '$(BuildingByReSharper)' == 'true'">true</TreatWarningsAsErrors>
+    <!-- Enable Warnings as Errors in CI -->
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' And '$(CI)' != ''">true</TreatWarningsAsErrors>
+    <!-- LEGACY: enable by default until people explicitly set their preferences -->
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- XML documentation adjustments -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnableXmlDocAdjustments)' == 'true'">
+    <!-- Documentation can be disabled per-project -->
+    <GenerateDocumentationFile Condition="'$(GenerateDocumentationFile)' == ''">true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

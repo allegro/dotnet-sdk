@@ -52,16 +52,21 @@ The `Directory.Build.props` file should be updated in order to actually import t
 
 Most properties are only set in the SDK if not configured by the project.
 
-To configure the SDK, the following properties can be added into `Directory.Build.props` or `.csproj` files:
+To configure the SDK, the following properties can be added into `Directory.Build.props` or `.*proj` files:
 
 - `AllegroDotnetSdkEnableXmlDocAdjustments` (default: true) - enable doc file generation, suppress missing-comments warning (1591) - completely in test projects, as errors otherwise (keep as warning).
-- `TreatWarningsAsErrors` (default: true in CI and Rider IDE)
-- `UseAllegroDotnetSdkDefaultAnalyzers` (default: true when no CPM) - reference and configure several external analyzers - StyleCop, AsyncFixer, Meziantou.
+- `TreatWarningsAsErrors` (default: true in CI and Rider IDE).
 - `AllegroDotnetSdkEnableGlobalEditorConfig` (default: true) - add `editorconfig.global` analyzer configuration file.
-- `AllegroDotnetSdkEnableImplicitUsingsAdjustments` (default: true) - add `System.Collections.Immutable` and remove `Microsoft.Extensions.Logging` and `System.Net.Http` implicit usings.
+- `AllegroDotnetSdkEnablePackAdjustments` (default: true) - sets PublishRepositoryUrl and enables `.snupkg` symbols.
+- `AllegroDotnetSdkEnableAzureArtifactsAdjustments` (default: false) - disables `.snupkg` and instead embeds PDBs in `.nupkg`.
+
+For `C#` only:
+
+- `AllegroDotnetSdkEnableImplicitUsingsAdjustments` (default: true for C#) - add `System.Collections.Immutable` and remove `Microsoft.Extensions.Logging` and `System.Net.Http` implicit usings.
+- `UseAllegroDotnetSdkDefaultAnalyzers` (default: true for C# when no CPM) - reference and configure several external analyzers - StyleCop, AsyncFixer, Meziantou.
 - `AllegroDotnetSdkEnableAsyncFixer` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references AsyncFixer package.
 - `AllegroDotnetSdkEnableMeziantou` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references Meziantou.Analyzers package.
-- `AllegroDotnetSdkEnableStyleCop` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references StyleCop.Analyzers package.
+- `AllegroDotnetSdkEnableStyleCop` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references StyleCop.Analyzers package and a preset `stylecop.json`.
 
 Configure in `Directory.Build.props` - repo wide:
 

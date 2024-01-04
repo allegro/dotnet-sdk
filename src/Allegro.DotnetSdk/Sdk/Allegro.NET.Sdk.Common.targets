@@ -1,0 +1,29 @@
+<Project>
+
+  <!-- Setup this SDKs defaults -->
+  <PropertyGroup>
+    <AllegroDotnetSdkEnableGlobalEditorConfig Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == ''">true</AllegroDotnetSdkEnableGlobalEditorConfig>
+    <AllegroDotnetSdkEnablePackAdjustments Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == ''">true</AllegroDotnetSdkEnablePackAdjustments>
+    <AllegroDotnetSdkEnableAzureArtifactsAdjustments Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == ''">false</AllegroDotnetSdkEnableAzureArtifactsAdjustments>
+  </PropertyGroup>
+
+  <!-- Configure nuget-packing for Library/Packable non-test projects -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == 'true' And ('$(OutputType)' == 'Library' Or '$(IsPackable)' != 'false') And '$(IsTestProject)' != 'true'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == 'true'">
+    <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == 'true'">
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
+  </ItemGroup>
+
+</Project>
