@@ -1,9 +1,12 @@
-<Project InitialTargets="AllegroDotnetSdkValidation">
+<Project>
+  <!--
+    Empty file if there's need to use in future.
 
-  <Target Name="AllegroDotnetSdkValidation">
-    <Error
-      Text="Allegro.DotnetSdk requires .NET SDK v8.0.100+ to be used, but $(NETCoreSdkVersion) was found."
-      Condition="$([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '8.0'))" />
-  </Target>
+    We're using CustomAfterDirectoryBuildTargets hook in Sdk.props
+    to import Allegro.NET.Sdk.targets immediately after Directory.Build.targets
+    is/could be imported. This allows using this Sdk as <Sdk/> element
+    in Directory.Build.props, and this Sdk's targets will be imported after project
+    file anyway.
 
+  -->
 </Project>

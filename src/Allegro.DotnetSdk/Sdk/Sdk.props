@@ -1,4 +1,4 @@
-<Project>
+<Project InitialTargets="AllegroDotnetSdkValidation">
 
   <PropertyGroup>
     <!--
@@ -7,21 +7,23 @@
     <UsingAllegroDotnetSdk>true</UsingAllegroDotnetSdk>
 
     <!--
-      Import our custom props just after Directory.Build.props is imported, but before Microsoft.NET.Sdk.props
-    -->
-    <CustomAfterDirectoryBuildProps>$(CustomAfterDirectoryBuildProps);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.props</CustomAfterDirectoryBuildProps>
-    <!--
       Import our custom targets after Directory.Build.targets is imported
     -->
-    <CustomBeforeDirectoryBuildTargets>$(CustomBeforeDirectoryBuildTargets);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.targets</CustomBeforeDirectoryBuildTargets>
-  </PropertyGroup>
+    <CustomAfterDirectoryBuildTargets>$(CustomAfterDirectoryBuildTargets);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.targets</CustomAfterDirectoryBuildTargets>
 
-  <!--
-    LEGACY: remove after no more projects reference NetCoreVersions property:
-    https://sourcegraph.allegrogroup.com/search?q=context:global+repo:AllegroTechies+%22%28NetCoreVersions%29%22&patternType=standard&sm=1&groupBy=repo
-  -->
-  <PropertyGroup Label="Target Platforms">
+    <!--
+      LEGACY: remove after no more projects reference NetCoreVersions property:
+      https://sourcegraph.allegrogroup.com/search?q=context:global+repo:AllegroTechies+%22%28NetCoreVersions%29%22&patternType=standard&sm=1&groupBy=repo
+    -->
     <NetCoreVersions>net6.0</NetCoreVersions>
   </PropertyGroup>
+
+  <Import Project="Allegro.NET.Sdk.props" />
+
+  <Target Name="AllegroDotnetSdkValidation">
+    <Error
+      Text="Allegro.DotnetSdk requires .NET SDK v8.0.100+ to be used, but $(NETCoreSdkVersion) was found."
+      Condition="$([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '8.0'))" />
+  </Target>
 
 </Project>

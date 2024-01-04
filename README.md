@@ -55,7 +55,7 @@ Most properties are only set in the SDK if not configured by the project.
 To configure the SDK, the following properties can be added into `Directory.Build.props` or `.*proj` files:
 
 - `AllegroDotnetSdkEnableXmlDocAdjustments` (default: true) - enable doc file generation, suppress missing-comments warning (1591) - completely in test projects, as errors otherwise (keep as warning).
-- `TreatWarningsAsErrors` (default: true in CI and Rider IDE).
+- `AllegroDotnetSdkTreatWarningsAsErrors` (default: true in CI and Rider IDE) - to enable in local shell or other IDEs, just set your own user environment variable `TreatWarningsAsErrors=true`.
 - `AllegroDotnetSdkEnableGlobalEditorConfig` (default: true) - add `editorconfig.global` analyzer configuration file.
 - `AllegroDotnetSdkEnablePackAdjustments` (default: true) - sets PublishRepositoryUrl and enables `.snupkg` symbols.
 - `AllegroDotnetSdkEnableAzureArtifactsAdjustments` (default: false) - disables `.snupkg` and instead embeds PDBs in `.nupkg`.
