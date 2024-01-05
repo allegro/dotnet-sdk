@@ -26,20 +26,26 @@ public class SampleProjectTests
         };
         // MSBuild variables like MSBuildExtensionsPath, MSBuildSDKsPath cause issues
         // with correct SDK resolution based on global.json in sample projects.
-        var msbuildKeys = startInfo.Environment.Keys.Where(x => x.StartsWith("MSBuild", StringComparison.OrdinalIgnoreCase)).ToArray();
-        foreach (var key in msbuildKeys)
+        // Also remove any locally set AllegroDotnetSdk* variables
+        static bool IsFilteredEnvVar(string value) =>
+            value.StartsWith("MSBuild", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("AllegroDotnetSdk", StringComparison.OrdinalIgnoreCase);
+
+        foreach (var key in startInfo.Environment.Keys.Where(IsFilteredEnvVar).ToArray())
         {
             startInfo.Environment.Remove(key);
         }
+        // simulate CI builds, that changes some switches in Sdk
+        startInfo.Environment["CI"] = "true";
         var process = Process.Start(startInfo);
         await process!.WaitForExitAsync();
 
         var msgPath = Path.Combine(projectPath, "message.txt");
+        var stdout = process.StandardOutput.ReadToEnd();
+        var stderr = process.StandardError.ReadToEnd();
         if (Path.Exists(msgPath))
         {
             var msg = File.ReadAllText(msgPath);
-            var stdout = process.StandardOutput.ReadToEnd();
-            var stderr = process.StandardError.ReadToEnd();
             Assert.Contains(msg, stderr + stdout);
         }
 
@@ -49,6 +55,7 @@ public class SampleProjectTests
         }
         else
         {
+            Assert.Empty(stderr);
             Assert.Equal(0, process.ExitCode);
         }
     }

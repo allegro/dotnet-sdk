@@ -18,7 +18,7 @@
 
   <ItemGroup Label="Meziantou" Condition="'$(AllegroDotnetSdkEnableMeziantou)' == 'true'">
     <!-- https://github.com/meziantou/Meziantou.Analyzer -->
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.734">
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.758">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
