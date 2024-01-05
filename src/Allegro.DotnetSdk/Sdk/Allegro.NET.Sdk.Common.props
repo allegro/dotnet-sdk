@@ -25,6 +25,14 @@
     <GenerateDocumentationFile Condition="'$(GenerateDocumentationFile)' == ''">true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <!-- Configure nuget-packing -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == 'true'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == 'true'">
     <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
