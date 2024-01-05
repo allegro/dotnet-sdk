@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+using FluentAssertions;
+
 namespace Allegro.DotnetSdk.Tests;
 
 public class SampleProjectTests
@@ -43,20 +45,23 @@ public class SampleProjectTests
         var msgPath = Path.Combine(projectPath, "message.txt");
         var stdout = process.StandardOutput.ReadToEnd();
         var stderr = process.StandardError.ReadToEnd();
+        // msbuild doesn't seem to print errors to stderr, at least when we call it like above
+        var fulloutput = stderr + stdout;
         if (Path.Exists(msgPath))
         {
             var msg = File.ReadAllText(msgPath);
-            Assert.Contains(msg, stderr + stdout);
+            fulloutput.Should().Contain(msg);
         }
 
         if (projectName.EndsWith("Error"))
         {
-            Assert.NotEqual(0, process.ExitCode);
+            process.ExitCode.Should()
+                .NotBe(0, because: "error projects should fail, but this passed with output: {0}", stdout);
         }
         else
         {
-            Assert.Empty(stderr);
-            Assert.Equal(0, process.ExitCode);
+            process.ExitCode.Should()
+                .Be(0, because: "valid projects should build, but this failed with output: {0}", stdout + stderr);
         }
     }
 
