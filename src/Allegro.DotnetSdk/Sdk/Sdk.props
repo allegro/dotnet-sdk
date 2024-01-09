@@ -1,85 +1,29 @@
-<Project>
-    <PropertyGroup Label="Target Platforms">
-        <NetCoreVersions>net6.0</NetCoreVersions>
-        <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
-        <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
-        <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
-    </PropertyGroup>
-    
-    <PropertyGroup Label="Project Settings">
-        <LangVersion>latest</LangVersion>
-        <AnalysisMode>Recommended</AnalysisMode>
-        <AnalysisLevel>latest</AnalysisLevel>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <!-- Documentation can be enforced per-project -->
-        <GenerateDocumentationFile>false</GenerateDocumentationFile>
-        <!-- Some devs might want to turn off errors for warning for local development -->
-        <TreatWarningsAsErrors Condition=" '$(TreatWarningsAsErrors)' != 'false' ">true</TreatWarningsAsErrors>
-    </PropertyGroup>
+<Project InitialTargets="AllegroDotnetSdkValidation">
 
-    <ItemGroup Label="ImplicitUsings additional includes">
-        <Using Include="System.Collections.Immutable" />
-    </ItemGroup>
+  <PropertyGroup>
+    <!--
+      Indicate to other targets that Allegro.DotnetSdk is being used.
+    -->
+    <UsingAllegroDotnetSdk>true</UsingAllegroDotnetSdk>
 
-    <PropertyGroup Label="Build Output">
-        <RepoRoot Condition="'$(RepoRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'global.json'))</RepoRoot>
-        <BaseOutputPath>$(RepoRoot)\bin\$(MSBuildProjectName)</BaseOutputPath>
-        <BaseIntermediateOutputPath>$(RepoRoot)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-        <PackageOutputPath>$(RepoRoot)\nuget</PackageOutputPath>
-    </PropertyGroup>
-    
-    <ItemGroup Label="StyleCop" Condition="'$(AllegroDotnetSdkEnableStyleCop)' != false">
-        <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json"/>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435"> <!-- need to use beta version to get the latest fixes -->
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+    <!--
+      Import our custom targets after Directory.Build.targets is imported
+    -->
+    <CustomAfterDirectoryBuildTargets>$(CustomAfterDirectoryBuildTargets);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.targets</CustomAfterDirectoryBuildTargets>
 
-    <ItemGroup Label="AsyncFixer" Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' != false">
-        <PackageReference Include="AsyncFixer" Version="1.6.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-    
-    <ItemGroup Label="Meziantou" Condition="'$(AllegroDotnetSdkEnableMeziantou)' != false">
-        <PackageReference Include="Meziantou.Analyzer" Version="1.0.734">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+    <!--
+      LEGACY: remove after no more projects reference NetCoreVersions property:
+      https://sourcegraph.allegrogroup.com/search?q=context:global+repo:AllegroTechies+%22%28NetCoreVersions%29%22&patternType=standard&sm=1&groupBy=repo
+    -->
+    <NetCoreVersions>net6.0</NetCoreVersions>
+  </PropertyGroup>
 
-    <ItemGroup Label="NRT configuration" Condition=" '$(Configuration)' == 'Debug' AND '$(Nullable)' == 'enable' AND '$(AllegroDotnetSdkEnableSmartAnalyzers)' != false ">
-        <PackageReference Include="SmartAnalyzers.CSharpExtensions.Annotations" Version="4.2.7">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-        <AssemblyAttribute Include="SmartAnalyzers.CSharpExtensions.Annotations.InitRequiredForNotNullAttribute" />
-    </ItemGroup>
+  <Import Project="Allegro.NET.Sdk.props" />
 
-    <ItemGroup Label="Global editor config" Condition="'$(AllegroDotnetSdkDisableGlobalEditorConfig)' != true">
-        <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
-    </ItemGroup>
+  <Target Name="AllegroDotnetSdkValidation">
+    <Error
+      Text="Allegro.DotnetSdk requires .NET SDK v8.0.100+ to be used, but $(NETCoreSdkVersion) was found."
+      Condition="$([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '8.0'))" />
+  </Target>
 
-    <PropertyGroup Label="Properties dedicated for test projects" Condition="$(MSBuildProjectDirectory.Contains(`test`))">
-        <!-- Exclude analyzer warnings in test projects -->
-        <!-- CA1707: Identifiers should not contain underscores -->
-        <NoWarn>$(NoWarn);CA1707</NoWarn>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" !$(MSBuildProjectDirectory.Contains(`test`)) ">
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <!-- SourceLink configuration -->
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
-        <AllowedOutputExtensionsInPackageBuildOutputFolder>
-            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
-        </AllowedOutputExtensionsInPackageBuildOutputFolder>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-    
 </Project>

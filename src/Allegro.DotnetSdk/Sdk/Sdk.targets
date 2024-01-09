@@ -1,17 +1,12 @@
 <Project>
-    <!-- Empty file prevents accidental inclusion of files from directories above -->
+  <!--
+    Empty file if there's need to use in future.
 
-    <!-- 
-    According to https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2022#import-order,
-    Directory.Build.props is imported very early. If the global using System.Net.Http
-    is added by some file that is imported later, then the Remove in Directory.Build.props
-    cannot affect the item that does not exist yet. It'd work better
-    in Directory.Build.targets.
-    
-    More: https://stackoverflow.com/questions/52866794/why-doesnt-directory-build-props-work-when-building-a-solution-using-visual-stu
-    -->
-    <ItemGroup Label="ImplicitUsings additional removes">
-        <Using Remove="Microsoft.Extensions.Logging" />
-        <Using Remove="System.Net.Http" />
-    </ItemGroup>
+    We're using CustomAfterDirectoryBuildTargets hook in Sdk.props
+    to import Allegro.NET.Sdk.targets immediately after Directory.Build.targets
+    is/could be imported. This allows using this Sdk as <Sdk/> element
+    in Directory.Build.props, and this Sdk's targets will be imported after project
+    file anyway.
+
+  -->
 </Project>

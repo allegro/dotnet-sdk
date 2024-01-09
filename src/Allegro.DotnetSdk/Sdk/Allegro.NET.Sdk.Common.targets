@@ -1,0 +1,8 @@
+<Project>
+
+  <!-- Configure restore for CPVM -->
+  <PropertyGroup Condition="'$(ManagePackageVersionsCentrally)' == 'true'">
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+  </PropertyGroup>
+
+</Project>

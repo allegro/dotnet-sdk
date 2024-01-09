@@ -1,13 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.Build.NoTargets">
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <BuildOutputTargetFolder>build\</BuildOutputTargetFolder>
+    <PackageVersion>2.0.0</PackageVersion>
+    <IsPackable>true</IsPackable>
+    <DevelopmentDependency>true</DevelopmentDependency>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageType>MSBuildSdk</PackageType>
-    <Description>Allegro Dotnet SDK</Description>
-    <PackageTags>MSBuild MSBuildSdk</PackageTags>
-    <DevelopmentDependency>true</DevelopmentDependency>
-    <PackageVersion>1.2.2</PackageVersion>
+    <PackageDescription>Allegro Dotnet SDK</PackageDescription>
+    <PackageTags>$(Tags) MSBuild MSBuildSdk</PackageTags>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <!-- NU5128: Add lib or ref assemblies for the net6.0 target framework -->
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="Sdk/**" Pack="true" PackagePath="Sdk/" />
+  </ItemGroup>
+
 </Project>

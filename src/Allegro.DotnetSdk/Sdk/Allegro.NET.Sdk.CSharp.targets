@@ -1,0 +1,30 @@
+<Project>
+
+  <!-- Setup this SDKs defaults -->
+  <PropertyGroup>
+    <!-- Enable default analyzers if CPM is not used. -->
+    <UseAllegroDotnetSdkDefaultAnalyzers Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == '' And '$(ManagePackageVersionsCentrally)' != 'true'">true</UseAllegroDotnetSdkDefaultAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == 'true'">
+    <AllegroDotnetSdkEnableAsyncFixer Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' == ''">true</AllegroDotnetSdkEnableAsyncFixer>
+    <AllegroDotnetSdkEnableMeziantou Condition="'$(AllegroDotnetSdkEnableMeziantou)' == ''">true</AllegroDotnetSdkEnableMeziantou>
+    <AllegroDotnetSdkEnableStyleCop Condition="'$(AllegroDotnetSdkEnableStyleCop)' == ''">true</AllegroDotnetSdkEnableStyleCop>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(AllegroDotnetSdkEnableStyleCop)' == 'true'">
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup Label="ImplicitUsings adjustments" Condition="('$(ImplicitUsings)' == 'true' Or '$(ImplicitUsings)' == 'enable') And '$(AllegroDotnetSdkEnableImplicitUsingsAdjustments)' == 'true'">
+    <!-- Add Immutable as we often use them -->
+    <Using Include="System.Collections.Immutable" />
+    <!-- Remove Logging because it conflicts with Serilog which we use by default -->
+    <Using Remove="Microsoft.Extensions.Logging" />
+    <!-- Remove Http because we want to explicitly enforce devs to think twice before using System.Net.Http -->
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+
+  <Import Project="Allegro.NET.Sdk.CSharp.Analyzers.targets" />
+
+</Project>

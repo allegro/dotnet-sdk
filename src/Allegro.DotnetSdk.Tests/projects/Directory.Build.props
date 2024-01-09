@@ -1,0 +1,5 @@
+<Project>
+  <!-- Prevents inclusion of files from directories above -->
+
+  <Import Project="../../Allegro.DotnetSdk/Sdk/Sdk.props" />
+</Project>

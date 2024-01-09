@@ -1,7 +1,9 @@
 .idea/
 .ionide/
 App_Data/
+artifacts/
 packages/
+package/
 obj/
 bin/
 build/

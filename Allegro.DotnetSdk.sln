@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{840CB7AA-881D-4626-9D81-29704148DC78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegro.DotnetSdk", "src\Allegro.DotnetSdk\Allegro.DotnetSdk.csproj", "{655AEDF1-B3C4-4F74-9232-AA89FF07D598}"
@@ -12,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegro.DotnetSdk.Tests", "src\Allegro.DotnetSdk.Tests\Allegro.DotnetSdk.Tests.csproj", "{DD3156B2-4B95-41D5-9215-18CFA226F538}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +22,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{655AEDF1-B3C4-4F74-9232-AA89FF07D598} = {840CB7AA-881D-4626-9D81-29704148DC78}
+		{DD3156B2-4B95-41D5-9215-18CFA226F538} = {840CB7AA-881D-4626-9D81-29704148DC78}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{655AEDF1-B3C4-4F74-9232-AA89FF07D598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{655AEDF1-B3C4-4F74-9232-AA89FF07D598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655AEDF1-B3C4-4F74-9232-AA89FF07D598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655AEDF1-B3C4-4F74-9232-AA89FF07D598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD3156B2-4B95-41D5-9215-18CFA226F538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD3156B2-4B95-41D5-9215-18CFA226F538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD3156B2-4B95-41D5-9215-18CFA226F538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD3156B2-4B95-41D5-9215-18CFA226F538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

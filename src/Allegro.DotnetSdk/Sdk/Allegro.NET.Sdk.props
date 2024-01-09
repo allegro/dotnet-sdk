@@ -1,0 +1,6 @@
+<Project>
+
+  <Import Project="Allegro.NET.Sdk.Common.props" />
+  <Import Project="Allegro.NET.Sdk.CSharp.props" Condition="'$(MSBuildProjectExtension)' == '.csproj'" />
+
+</Project>

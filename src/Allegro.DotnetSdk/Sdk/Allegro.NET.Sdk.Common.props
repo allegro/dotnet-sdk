@@ -1,0 +1,48 @@
+<Project>
+  <!-- This file configures language-independent options -->
+
+  <!-- Setup this SDKs defaults -->
+  <PropertyGroup>
+    <AllegroDotnetSdkEnableXmlDocAdjustments Condition="'$(AllegroDotnetSdkEnableXmlDocAdjustments)' == ''">true</AllegroDotnetSdkEnableXmlDocAdjustments>
+    <AllegroDotnetSdkTreatWarningsAsErrors Condition="'$(AllegroDotnetSdkTreatWarningsAsErrors)' == ''">true</AllegroDotnetSdkTreatWarningsAsErrors>
+    <AllegroDotnetSdkEnableGlobalEditorConfig Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == ''">true</AllegroDotnetSdkEnableGlobalEditorConfig>
+    <AllegroDotnetSdkEnablePackAdjustments Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == ''">true</AllegroDotnetSdkEnablePackAdjustments>
+    <AllegroDotnetSdkEnableAzureArtifactsAdjustments Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == ''">false</AllegroDotnetSdkEnableAzureArtifactsAdjustments>
+    <ContinuousIntegrationBuild Condition="'$(ContinuousIntegrationBuild)' == '' And ('$(CI)' == 'true' Or '$(TF_BUILD)' == 'true')">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Warnings as Errors -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkTreatWarningsAsErrors)' == 'true'">
+    <!-- Some devs want Warnings as Errors in local IDE development -->
+    <TreatWarningsAsErrors Condition="'$(BuildingByReSharper)' == 'true'">true</TreatWarningsAsErrors>
+    <!-- Enable Warnings as Errors in CI (or in Azure Pipelines - they don't set CI, only TF_BUILD) -->
+    <TreatWarningsAsErrors Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- XML documentation adjustments -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnableXmlDocAdjustments)' == 'true'">
+    <!-- Documentation can be disabled per-project -->
+    <GenerateDocumentationFile Condition="'$(GenerateDocumentationFile)' == ''">true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Configure nuget-packing -->
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == 'true'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == 'true'">
+    <!-- Embed PDBs in .nupkg because Azure Artifacts doesn't support .snupkg yet -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(AllegroDotnetSdkEnableGlobalEditorConfig)' == 'true'">
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)editor.globalconfig" Link="editor.globalconfig" />
+  </ItemGroup>
+
+</Project>
