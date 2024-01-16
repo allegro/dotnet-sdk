@@ -9,6 +9,8 @@
     <AllegroDotnetSdkEnablePackAdjustments Condition="'$(AllegroDotnetSdkEnablePackAdjustments)' == ''">true</AllegroDotnetSdkEnablePackAdjustments>
     <AllegroDotnetSdkEnableAzureArtifactsAdjustments Condition="'$(AllegroDotnetSdkEnableAzureArtifactsAdjustments)' == ''">false</AllegroDotnetSdkEnableAzureArtifactsAdjustments>
     <ContinuousIntegrationBuild Condition="'$(ContinuousIntegrationBuild)' == '' And ('$(CI)' == 'true' Or '$(TF_BUILD)' == 'true')">true</ContinuousIntegrationBuild>
+    <!-- https://github.com/dotnet/sdk/issues/25294 -->
+    <DefaultItemExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);packages.lock.json</DefaultItemExcludesInProjectFolder>
   </PropertyGroup>
 
   <!-- Warnings as Errors -->
