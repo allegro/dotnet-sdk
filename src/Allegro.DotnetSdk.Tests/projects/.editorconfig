@@ -1,0 +1,2 @@
+# stop imports from directories above
+root = true
