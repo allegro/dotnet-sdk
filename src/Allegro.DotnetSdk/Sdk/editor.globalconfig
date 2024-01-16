@@ -6,12 +6,33 @@ indent_style = space
 
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
 
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = warning
+
+# CA1012: Abstract types should not have public constructors
+dotnet_diagnostic.CA1012.severity = warning
+
+# CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1051.severity = suggestion
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
+# CA1716: Identifiers should not match keywords
+dotnet_diagnostic.CA1716.severity = suggestion
+
+# CA1822: Make member static
+dotnet_diagnostic.CA1822.severity = warning
+
 dotnet_analyzer_diagnostic.severity = default
 
 # Dotnet code style settings:
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/
+
 # Sort using and Import directives with System.* appearing first
-dotnet_sort_system_directives_first = true:refactoring
-dotnet_separate_import_directive_groups = false:refactoring
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
 
 # Avoid "this." and "Me." if not necessary
 dotnet_style_qualification_for_field = false:error
@@ -114,23 +135,14 @@ dotnet_naming_symbols.all_members.applicable_kinds = *
 
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
+# IDE0005: Using directive is unnecessary
+dotnet_diagnostic.IDE0005.severity = warning
+
 # IDE0036: Order modifiers
 dotnet_diagnostic.IDE0036.severity = warning
 
 # IDE0043: Format string contains invalid placeholder
 dotnet_diagnostic.IDE0043.severity = warning
-
-# IDE0044: Make field readonly
-dotnet_diagnostic.IDE0044.severity = warning
-
-# IDE0011: Add braces
-csharp_prefer_braces = when_multiline:warning
-# NOTE: We need the below severity entry for Add Braces due to https://github.com/dotnet/roslyn/issues/44201
-# TODO: decide if we want to suggest it or not
-dotnet_diagnostic.IDE0011.severity = suggestion
-
-# IDE0040: Add accessibility modifiers
-dotnet_diagnostic.IDE0040.severity = warning
 
 # CONSIDER: Are IDE0051 and IDE0052 too noisy to be warnings for IDE editing scenarios? Should they be made build-only warnings?
 # IDE0051: Remove unused private member
@@ -139,29 +151,8 @@ dotnet_diagnostic.IDE0051.severity = warning
 # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0052.severity = suggestion
 
-# IDE0059: Unnecessary assignment to a value
-dotnet_diagnostic.IDE0059.severity = suggestion
-
-# IDE0060: Remove unused parameter
-dotnet_diagnostic.IDE0060.severity = suggestion
-
-# CA1012: Abstract types should not have public constructors
-dotnet_diagnostic.CA1012.severity = warning
-
-# CA1051: Do not declare visible instance fields
-dotnet_diagnostic.CA1051.severity = suggestion
-
-# CA1716: Identifiers should not match keywords
-dotnet_diagnostic.CA1716.severity = suggestion
-
-# CA1822: Make member static
-dotnet_diagnostic.CA1822.severity = warning
-
-# SA1122: Use string.Empty for empty strings
-dotnet_diagnostic.SA1122.severity = none
-
-# IDE0005: Using directive is unnecessary
-dotnet_diagnostic.IDE0005.severity = warning
+# IDE0055: Formatting options
+dotnet_diagnostic.IDE0055.severity = warning
 
 # dotnet_style_allow_multiple_blank_lines_experimental
 dotnet_diagnostic.IDE2000.severity = warning
@@ -179,6 +170,10 @@ dotnet_diagnostic.IDE2003.severity = suggestion
 dotnet_diagnostic.IDE2004.severity = warning
 
 # CSharp code style settings:
+csharp_prefer_braces = when_multiline:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 
 # Newline settings
 csharp_new_line_before_open_brace = all
@@ -203,10 +198,9 @@ csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
 
 # Prefer "var" everywhere
-dotnet_diagnostic.IDE0007.severity = warning
-csharp_style_var_for_built_in_types = true:error
-csharp_style_var_when_type_is_apparent = true:error
-csharp_style_var_elsewhere = true:error
+csharp_style_var_for_built_in_types = true:warning
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = true:warning
 
 # Prefer method-like constructs to have a block body
 csharp_style_expression_bodied_methods = false:none
@@ -263,11 +257,7 @@ resharper_csharp_wrap_parameters_style = chop_if_long
 resharper_local_function_body = expression_body
 resharper_place_simple_embedded_statement_on_same_line = false
 
-# CS1591: Missing XML comment for publicly visible type or member
-dotnet_diagnostic.CS1591.severity = warning
-
-# CA1707: Identifiers should not contain underscores
-dotnet_diagnostic.CA1707.severity = none
+# StyleCop.Analyzers
 
 # SA0001: All diagnostics of XML documentation comments has been disabled due to the current project configuration.
 dotnet_diagnostic.SA0001.severity = suggestion
@@ -287,6 +277,9 @@ dotnet_diagnostic.SA1111.severity = suggestion
 
 # SA1118: A parameter to a C# method or indexer, other than the first parameter, spans across multiple lines.
 dotnet_diagnostic.SA1118.severity = suggestion
+
+# SA1122: Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = none
 
 # SA1123: The C# code contains a region within the body of a code element.
 dotnet_diagnostic.SA1123.severity = suggestion
@@ -311,6 +304,9 @@ dotnet_diagnostic.SA1202.severity = suggestion
 
 # SA1204: Static elements should appear before instance elements
 dotnet_diagnostic.SA1204.severity = suggestion
+
+# SA1200: SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives
+dotnet_diagnostic.SA1208.severity = warning
 
 # SA1309: Field names should not begin with underscore
 dotnet_diagnostic.SA1309.severity = none
