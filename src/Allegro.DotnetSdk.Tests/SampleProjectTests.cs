@@ -10,39 +10,23 @@ public class SampleProjectTests
     [Theory, MemberData(nameof(ProjectNames))]
     public async Task ValidateProject(string projectName)
     {
-        var projectPath = Path.Combine(ProjectsDirectory, projectName);
-        var startInfo = new ProcessStartInfo
+        var project = new Project(projectName);
+        if (Path.Exists(project.GetFilepath(".config/dotnet-tools.json")))
         {
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            WindowStyle = ProcessWindowStyle.Hidden,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            WorkingDirectory = projectPath,
-            FileName = OperatingSystem.IsWindows() ? "dotnet.exe" : "dotnet",
-            ArgumentList = {
-                "build",
-                "--nologo",
-                "--no-incremental"
-            },
-        };
-        // MSBuild variables like MSBuildExtensionsPath, MSBuildSDKsPath cause issues
-        // with correct SDK resolution based on global.json in sample projects.
-        // Also remove any locally set AllegroDotnetSdk* variables
-        static bool IsFilteredEnvVar(string value) =>
-            value.StartsWith("MSBuild", StringComparison.OrdinalIgnoreCase) ||
-            value.StartsWith("AllegroDotnetSdk", StringComparison.OrdinalIgnoreCase);
-
-        foreach (var key in startInfo.Environment.Keys.Where(IsFilteredEnvVar).ToArray())
-        {
-            startInfo.Environment.Remove(key);
+            var toolRestore = RunDotnetInProject(project, "tool", "restore");
+            await toolRestore!.WaitForExitAsync();
+            toolRestore.ExitCode.Should().Be(0);
         }
-        // simulate CI builds, that changes some switches in Sdk
-        startInfo.Environment["CI"] = "true";
-        var process = Process.Start(startInfo);
+        if (Path.Exists(project.GetFilepath("paket.dependencies")))
+        {
+            var paketRestore = RunDotnetInProject(project, "paket", "restore");
+            await paketRestore!.WaitForExitAsync();
+            paketRestore.ExitCode.Should().Be(0);
+        }
+        var process = RunDotnetInProject(project, "build", "--nologo", "--no-incremental");
         await process!.WaitForExitAsync();
 
-        var msgPath = Path.Combine(projectPath, "message.txt");
+        var msgPath = project.GetFilepath("message.txt");
         var stdout = process.StandardOutput.ReadToEnd();
         var stderr = process.StandardError.ReadToEnd();
         // msbuild doesn't seem to print errors to stderr, at least when we call it like above
@@ -65,14 +49,50 @@ public class SampleProjectTests
         }
     }
 
-    public static IEnumerable<object[]> ProjectNames
+    private static Process? RunDotnetInProject(Project project, params string[] args)
     {
-        get
+        var startInfo = new ProcessStartInfo
         {
-            var dirs = Directory.EnumerateDirectories(ProjectsDirectory);
-            return dirs.Select(x => new object[] { Path.GetFileName(x)! });
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            WorkingDirectory = project.Directory,
+            FileName = OperatingSystem.IsWindows() ? "dotnet.exe" : "dotnet",
+        };
+        foreach (var arg in args)
+        {
+            startInfo.ArgumentList.Add(arg);
         }
+        // MSBuild variables like MSBuildExtensionsPath, MSBuildSDKsPath cause issues
+        // with correct SDK resolution based on global.json in sample projects.
+        // Also remove any locally set AllegroDotnetSdk* variables
+        static bool IsFilteredEnvVar(string value) =>
+            value.StartsWith("MSBuild", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("AllegroDotnetSdk", StringComparison.OrdinalIgnoreCase);
+
+        foreach (var key in startInfo.Environment.Keys.Where(IsFilteredEnvVar).ToArray())
+        {
+            startInfo.Environment.Remove(key);
+        }
+        // simulate CI builds, that changes some switches in Sdk
+        startInfo.Environment["CI"] = "true";
+        return Process.Start(startInfo);
     }
+
+    private record Project(string Name)
+    {
+        public string Directory { get; } = Path.Combine(ProjectsDirectory, Name);
+
+        public string GetFilepath(string filename) => Path.Combine(Directory, filename);
+    }
+
+    public static TheoryData<string> ProjectNames =>
+        new(
+            Directory.EnumerateDirectories(ProjectsDirectory)
+                .Select(Path.GetFileName)!
+                .Where(x => Directory.EnumerateFiles(Path.Combine(ProjectsDirectory, x!), "*.*proj").Any())!);
 
     private static Lazy<string> ThisFileDirectoryLazy { get; } =
     new(() =>

@@ -8,8 +8,7 @@
         "accessibility",
         "static",
         "readonly"
-      ],
-      "usingDirectivesPlacement": "outsideNamespace"
+      ]
     },
     "layoutRules": {
       "newlineAtEndOfFile": "omit"

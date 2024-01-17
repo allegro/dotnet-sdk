@@ -22,13 +22,13 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
 
 ```json
 {
-    "sdk": {
-      "version": "6.0.405",
-      "rollForward": "latestFeature"
-    },
-    "msbuild-sdks": {
-        "Allegro.DotnetSdk": "2.0.0"
-    }
+  "sdk": {
+    "version": "8.0.100",
+    "rollForward": "latestFeature"
+  },
+  "msbuild-sdks": {
+    "Allegro.DotnetSdk": "2.1.0"
+  }
 }
 
 ```
