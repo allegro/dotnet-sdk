@@ -24,3 +24,4 @@ paket-files/
 .DS_Store
 .vscode/
 coverage.*
+node_modules/

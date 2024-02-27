@@ -3,21 +3,14 @@
   <!-- Setup this SDKs defaults -->
   <PropertyGroup>
     <!-- Enable default analyzers if CPM is not used. -->
-    <UseAllegroDotnetSdkDefaultAnalyzers Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == '' And '$(ManagePackageVersionsCentrally)' != 'true'">true</UseAllegroDotnetSdkDefaultAnalyzers>
     <AllegroDotnetSdkEnableStyleCopConfig Condition="'$(AllegroDotnetSdkEnableStyleCopConfig)' == ''">true</AllegroDotnetSdkEnableStyleCopConfig>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(UseAllegroDotnetSdkDefaultAnalyzers)' == 'true'">
-    <AllegroDotnetSdkEnableAsyncFixer Condition="'$(AllegroDotnetSdkEnableAsyncFixer)' == ''">true</AllegroDotnetSdkEnableAsyncFixer>
-    <AllegroDotnetSdkEnableMeziantou Condition="'$(AllegroDotnetSdkEnableMeziantou)' == ''">true</AllegroDotnetSdkEnableMeziantou>
-    <AllegroDotnetSdkEnableStyleCop Condition="'$(AllegroDotnetSdkEnableStyleCop)' == ''">true</AllegroDotnetSdkEnableStyleCop>
   </PropertyGroup>
 
   <!-- 
     Include stylecop configuration if we include StyleCop analyzer within this Sdk,
     or if it was included externally as GlobalPackageReference when CPM is enabled.
   -->
-  <ItemGroup Condition="'$(AllegroDotnetSdkEnableStyleCopConfig)' == 'true' And ('$(AllegroDotnetSdkEnableStyleCop)' == 'true' Or @(GlobalPackageReference->WithMetadataValue('Identity','StyleCop.Analyzers')->Count()) > 0)">
+  <ItemGroup Condition="'$(AllegroDotnetSdkEnableStyleCopConfig)' == 'true' Or @(GlobalPackageReference->WithMetadataValue('Identity','StyleCop.Analyzers')->Count()) > 0)">
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -29,7 +22,5 @@
     <!-- Remove Http because we want to explicitly enforce devs to think twice before using System.Net.Http -->
     <Using Remove="System.Net.Http" />
   </ItemGroup>
-
-  <Import Project="Allegro.NET.Sdk.CSharp.Analyzers.targets" />
 
 </Project>
