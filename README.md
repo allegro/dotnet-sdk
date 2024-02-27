@@ -40,9 +40,6 @@ The `Directory.Build.props` file should be updated in order to actually import t
 ```xml
 <Project>
     <Sdk Name="Allegro.DotnetSdk" />
-    <PropertyGroup>
-        <TargetFramework>$(NetCoreVersions)</TargetFramework>
-    </PropertyGroup>
     
     <!-- other project-specific properties -->
 </Project>
