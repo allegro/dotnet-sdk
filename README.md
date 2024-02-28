@@ -60,10 +60,7 @@ To configure the SDK, the following properties can be added into `Directory.Buil
 For `C#` only:
 
 - `AllegroDotnetSdkEnableImplicitUsingsAdjustments` (default: true for C#) - add `System.Collections.Immutable` and remove `Microsoft.Extensions.Logging` and `System.Net.Http` implicit usings.
-- `UseAllegroDotnetSdkDefaultAnalyzers` (default: true for C# when no CPM) - reference and configure several external analyzers - StyleCop, AsyncFixer, Meziantou.
-- `AllegroDotnetSdkEnableAsyncFixer` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references AsyncFixer package.
-- `AllegroDotnetSdkEnableMeziantou` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references Meziantou.Analyzers package.
-- `AllegroDotnetSdkEnableStyleCop` (default: `UseAllegroDotnetSdkDefaultAnalyzers`) - references StyleCop.Analyzers package and a preset `stylecop.json`.
+- `AllegroDotnetSdkEnableStyleCopConfig` (default: true for C#) - references a preset `stylecop.json`.
 
 Configure in `Directory.Build.props` - repo wide:
 
@@ -76,7 +73,7 @@ Configure in `Directory.Build.props` - repo wide:
         <!-- The line below disables nullable reference types -->
         <Nullable>disable</Nullable>
         <!-- The line below disables the StyleCop -->
-        <AllegroDotnetSdkEnableStyleCop>false</AllegroDotnetSdkEnableStyleCop>
+        <AllegroDotnetSdkEnableStyleCopConfig>false</AllegroDotnetSdkEnableStyleCopConfig>
     </PropertyGroup>
 
 </Project>
@@ -92,6 +89,24 @@ Configure in `*.csproj` - project settings:
         <AllegroDotnetSdkEnableImplicitUsingsAdjustments>false</AllegroDotnetSdkEnableImplicitUsingsAdjustments>
     </PropertyGroup>
 
+</Project>
+```
+
+## Analyzers
+
+This SDK provides some default configuration (rules severity) for selected analyzers: StyleCop, Meziantou and AsyncFixer. It doesn't actually reference them. Avoiding direct references ensures that developers can seamlessly apply and update analyzers without being tied to specific versions.
+
+To add analyzers, include the following in your `Directory.Build.props` or `Directory.Packages.props` file:
+	
+```xml
+<Project>
+    <!-- ... -->
+    <ItemGroup>
+        <GlobalPackageReference Include="AsyncFixer" Version="1.6.0"/>
+        <GlobalPackageReference Include="Meziantou.Analyzer" Version="1.0.758"/>
+        <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435"/>
+    </ItemGroup>
+    <!-- ... -->
 </Project>
 ```
 

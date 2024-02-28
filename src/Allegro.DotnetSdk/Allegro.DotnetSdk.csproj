@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.Build.NoTargets">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>2.1.1</PackageVersion>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageVersion>2.2.0</PackageVersion>
     <IsPackable>true</IsPackable>
     <DevelopmentDependency>true</DevelopmentDependency>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -10,12 +10,6 @@
       Import our custom targets after Directory.Build.targets is imported
     -->
     <CustomAfterDirectoryBuildTargets>$(CustomAfterDirectoryBuildTargets);$(MSBuildThisFileDirectory)Allegro.NET.Sdk.targets</CustomAfterDirectoryBuildTargets>
-
-    <!--
-      LEGACY: remove after no more projects reference NetCoreVersions property:
-      https://sourcegraph.allegrogroup.com/search?q=context:global+repo:AllegroTechies+%22%28NetCoreVersions%29%22&patternType=standard&sm=1&groupBy=repo
-    -->
-    <NetCoreVersions>net6.0</NetCoreVersions>
   </PropertyGroup>
 
   <Import Project="Allegro.NET.Sdk.props" />
