@@ -3,14 +3,8 @@ name: Build Allegro.DotnetSdk
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/Allegro.DotnetSdk/**'
-      - 'src/*'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/Allegro.DotnetSdk/**'
-      - 'src/*'
 
 jobs:
   ci:
