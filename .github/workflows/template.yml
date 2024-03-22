@@ -114,10 +114,16 @@ jobs:
       run: | 
         dir "%cd%\unsigned"
         mkdir "%cd%\signed"
+        dotnet nuget sign "%cd%/unsigned/*.nupkg" --timestamper http://timestamp.digicert.com --output "%cd%\signed" --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
+        
+        mkdir c:\unsigned
+        copy "%cd%\unsigned\*.nupkg" c:\unsigned
+        mkdir c:\signed
         nuget sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite 
         dir %cd%\signed
         nuget verify -All "%cd%\signed\*.nupkg" 
       shell: cmd
+    #        
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
