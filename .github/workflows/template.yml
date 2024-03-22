@@ -112,9 +112,9 @@ jobs:
     #   run: dotnet nuget sign unsigned/*.nupkg --certificate-path cert.p12 --certificate-password ${{ secrets.nugetCertificatePassword }} --timestamper http://timestamp.digicert.com --output signed
     - name: Signing using Nuget 
       run: | 
-        nuget sign "\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite 
-        dir \signed
-        nuget verify -All "\signed\*.nupkg" 
+        nuget sign ".\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory ".\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite 
+        dir .\signed
+        nuget verify -All ".\signed\*.nupkg" 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
