@@ -109,9 +109,11 @@ jobs:
     - name: Sign package
       run: |
         smctl keypair list
-        dir
+        
         dir unsigned
-        dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
+        smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input ./unsigned
+        
+    #    dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
     # - name: Signing using Nuget 
     #   run: | 
     #     dir "%cd%\unsigned"
