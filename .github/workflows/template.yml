@@ -108,6 +108,7 @@ jobs:
     #   run: dotnet nuget sign unsigned/*.nupkg --certificate-path cert.p12 --certificate-password ${{ secrets.nugetCertificatePassword }} --timestamper http://timestamp.digicert.com --output signed
     - name: Sign package
       run: |
+        smctl keypair list
         dir
         dir unsigned
         dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
