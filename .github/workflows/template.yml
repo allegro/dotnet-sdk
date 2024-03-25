@@ -33,105 +33,108 @@ jobs:
     outputs:
       nupkgFilename: ${{ steps.nupkg.outputs.filename }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build -c Release --no-restore
-    - name: Test
-      run: dotnet test -c Release --no-build --verbosity normal
-    - name: Pack
-      run: dotnet pack -v normal -c Release --no-build --include-symbols --include-source -o package
-    # - name: Verify package name & version
-    #   id: nupkg
-    #   if: inputs.publish
-    #   run: |
-    #     TAG_NAME=${{ inputs.tagName }}
-    #     VERSION=${TAG_NAME##*v}
-    #     NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
-    #     echo "::set-output name=filename::$NUPKG"
-    #     if [ ! -f package/$NUPKG ]; then
-    #       echo "File '$NUPKG' does not exist";
-    #       exit 1;
-    #     fi
-    - uses: actions/upload-artifact@v3
-      if: inputs.publish
-      with:
-        name: package
-        path: src/${{ inputs.projectName }}/package
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build -c Release --no-restore
+      - name: Test
+        run: dotnet test -c Release --no-build --verbosity normal
+      - name: Pack
+        run: dotnet pack -v normal -c Release --no-build --include-symbols --include-source -o package
+      # - name: Verify package name & version
+      #   id: nupkg
+      #   if: inputs.publish
+      #   run: |
+      #     TAG_NAME=${{ inputs.tagName }}
+      #     VERSION=${TAG_NAME##*v}
+      #     NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
+      #     echo "::set-output name=filename::$NUPKG"
+      #     if [ ! -f package/$NUPKG ]; then
+      #       echo "File '$NUPKG' does not exist";
+      #       exit 1;
+      #     fi
+      - uses: actions/upload-artifact@v3
+        if: inputs.publish
+        with:
+          name: package
+          path: src/${{ inputs.projectName }}/package
   publish:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: inputs.publish
     needs: [build]
     steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: package
-        path: unsigned
-    # - name: NuGet Install 
-    #   uses: NuGet/setup-nuget@v1.0.5 
-    #   with: 
-    #     nuget-version: latest 
-    - name: Set up certificate 
-      run: | 
-        echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode | sudo install -D /dev/stdin /d/cognite_code_signing_github_actions.p12
-      shell: bash
-    - name: Set variables 
-      id: variables 
-      run: | 
-        echo "SM_HOST=${{ secrets.SM_HOST }}" >> "$GITHUB_ENV" 
-        echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> "$GITHUB_ENV" 
-        echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV" 
-        echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV" 
-        echo "SM_CLIENT_CERT_FILE=/d/cognite_code_signing_github_actions.p12" >> "$GITHUB_ENV"
-        echo "PKCS11_CONFIG=/tmp/DigiCert One Signing Manager Tools/smtools-linux-x64/pkcs11properties.cfg" >> "$GITHUB_ENV"
-        echo "/tmp/DigiCert One Signing Manager Tools/smtools-linux-x64" >> $GITHUB_PATH
-      shell: bash
-    - name: Configure Digicert Secure Software Manager
-      uses: digicert/ssm-code-signing@v0.0.2
-      env:
-        SM_API_KEY: ${{ env.SM_API_KEY }}
-        SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
-        SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
-    
-    # - name: Save & verify certificate
-    #   run: |
-    #     echo ${{ secrets.nugetCertificate }} | base64 -d > cert.p12
-    #     openssl pkcs12 -in cert.p12 -nodes -legacy -passin pass:"${{ secrets.nugetCertificatePassword }}" | openssl x509 -noout -subject -legacy || echo "Certificate validation failed"
-    # - name: Sign package
-    #   run: dotnet nuget sign unsigned/*.nupkg --certificate-path cert.p12 --certificate-password ${{ secrets.nugetCertificatePassword }} --timestamper http://timestamp.digicert.com --output signed
-    - name: Sign package
-      run: |
-        smctl keypair list
-        
-        dir unsigned
-        smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input ./unsigned
-        
-    #    dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
-    # - name: Signing using Nuget 
-    #   run: | 
-    #     dir "%cd%\unsigned"
-    #     mkdir "%cd%\signed"
-    #     dotnet nuget sign "%cd%\unsigned\*.nupkg" --timestamper http://timestamp.digicert.com --output "%cd%\signed" --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
-        
-    #     mkdir c:\unsigned
-        
-    #     copy "%cd%\unsigned\*.nupkg" c:\unsigned
-    #     dir c:\unsigned
-    #     mkdir c:\signed
-    #     nuget sign "c:\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "c:\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite 
-    #     dir %cd%\signed
-    #     dir d:\signed
+      - uses: actions/download-artifact@v3
+        with:
+          name: package
+          path: unsigned
+      - name: NuGet Install
+        uses: NuGet/setup-nuget@v1.0.5
+        with:
+          nuget-version: latest
+      # - name: Set up certificate
+      #   run: |
+      #     echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode | sudo install -D /dev/stdin /d/cognite_code_signing_github_actions.p12
+      #   shell: bash
+      - name: Setup Certificate Windows
+        run: |
+          echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/cognite_code_signing_github_actions.p12
+        # if: ${{ runner.os == 'Windows' && (!contains(env.DEPS_INSTALLED, 'TRUE')) }}
+        shell: bash
+      - name: Set variables
+        id: variables
+        run: |
+          echo "SM_HOST=${{ secrets.SM_HOST }}" >> "$GITHUB_ENV" 
+          echo "SM_API_KEY=${{ secrets.SM_API_KEY }}" >> "$GITHUB_ENV" 
+          echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV" 
+          echo "SM_CODE_SIGNING_CERT_SHA1_HASH=${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}" >> "$GITHUB_ENV"
+          echo "SM_CLIENT_CERT_FILE=D:\\cognite_code_signing_github_actions.p12" >> "$GITHUB_ENV"
+        shell: bash
+      - name: Configure Digicert Secure Software Manager
+        uses: digicert/ssm-code-signing@v0.0.2
+        env:
+          SM_API_KEY: ${{ env.SM_API_KEY }}
+          SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
+          SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
 
-    #     nuget verify -All "%cd%\signed\*.nupkg" 
-    #   shell: cmd
-    #        
+      # - name: Save & verify certificate
+      #   run: |
+      #     echo ${{ secrets.nugetCertificate }} | base64 -d > cert.p12
+      #     openssl pkcs12 -in cert.p12 -nodes -legacy -passin pass:"${{ secrets.nugetCertificatePassword }}" | openssl x509 -noout -subject -legacy || echo "Certificate validation failed"
+      # - name: Sign package
+      #   run: dotnet nuget sign unsigned/*.nupkg --certificate-path cert.p12 --certificate-password ${{ secrets.nugetCertificatePassword }} --timestamper http://timestamp.digicert.com --output signed
+      # - name: Sign package
+      #   run: |
+      #     smctl keypair list
+
+      #     dir unsigned
+      #     smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input ./unsigned
+
+    #    dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
+      - name: Signing using Nuget
+        run: |
+          dir "%cd%\unsigned"
+          mkdir "%cd%\signed"
+          dotnet nuget sign "%cd%\unsigned\*.nupkg" --timestamper http://timestamp.digicert.com --output "%cd%\signed" --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
+
+          mkdir c:\unsigned
+
+          copy "%cd%\unsigned\*.nupkg" c:\unsigned
+          dir c:\unsigned
+          mkdir c:\signed
+          nuget sign "c:\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "c:\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
+          dir %cd%\signed
+          dir d:\signed
+
+          nuget verify -All "%cd%\signed\*.nupkg"
+        shell: cmd
+    #
     # - name: Setup .NET
     #   uses: actions/setup-dotnet@v3
     #   with:
