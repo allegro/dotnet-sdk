@@ -78,16 +78,9 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
         with:
           nuget-version: latest
-      # - name: Set up certificate
-      #   run: |
-      #     echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode | sudo install -D /dev/stdin /d/cognite_code_signing_github_actions.p12
-      #   shell: bash
-      - name: Setup Certificate Windows
+      - name: Setup Certificate
         run: |
           echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/cognite_code_signing_github_actions.p12
-          ls -l /d
-          head -2 /d/cognite_code_signing_github_actions.p12
-        # if: ${{ runner.os == 'Windows' && (!contains(env.DEPS_INSTALLED, 'TRUE')) }}
         shell: bash
       - name: Set variables
         id: variables
@@ -106,46 +99,20 @@ jobs:
           SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
       - name: Setup SSM KSP on windows latest 
         run: | 
-          dir d:\
           smksp_registrar.exe list 
           smctl.exe keypair ls 
           C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user 
           smksp_cert_sync.exe 
           smctl.exe healthcheck
         shell: cmd 
-
-      # - name: Save & verify certificate
-      #   run: |
-      #     echo ${{ secrets.nugetCertificate }} | base64 -d > cert.p12
-      #     openssl pkcs12 -in cert.p12 -nodes -legacy -passin pass:"${{ secrets.nugetCertificatePassword }}" | openssl x509 -noout -subject -legacy || echo "Certificate validation failed"
-      # - name: Sign package
-      #   run: dotnet nuget sign unsigned/*.nupkg --certificate-path cert.p12 --certificate-password ${{ secrets.nugetCertificatePassword }} --timestamper http://timestamp.digicert.com --output signed
-      # - name: Sign package
-      #   run: |
-      #     smctl keypair list
-
-      #     dir unsigned
-      #     smctl sign --fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --input ./unsigned
-
-    #    dotnet nuget sign unsigned/*.nupkg --timestamper http://timestamp.digicert.com --output signed --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
       - name: Signing using Nuget
         run: |
           dir "%cd%\unsigned"
           mkdir "%cd%\signed"
-          dotnet nuget sign "%cd%\unsigned\*.nupkg" --timestamper http://timestamp.digicert.com --output "%cd%\signed" --certificate-fingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} --hash-algorithm SHA256 --verbosity detailed --overwrite
-
-          mkdir c:\unsigned
-
-          copy "%cd%\unsigned\*.nupkg" c:\unsigned
-          dir c:\unsigned
-          mkdir c:\signed
-          nuget sign "c:\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "c:\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
-          dir %cd%\signed
-          dir d:\signed
-
+          nuget sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
           nuget verify -All "%cd%\signed\*.nupkg"
+          dir "%cd%\signed"
         shell: cmd
-    #
     # - name: Setup .NET
     #   uses: actions/setup-dotnet@v3
     #   with:
