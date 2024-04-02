@@ -48,18 +48,18 @@ jobs:
         run: dotnet test -c Release --no-build --verbosity normal
       - name: Pack
         run: dotnet pack -v normal -c Release --no-build --include-symbols --include-source -o package
-      # - name: Verify package name & version
-      #   id: nupkg
-      #   if: inputs.publish
-      #   run: |
-      #     TAG_NAME=${{ inputs.tagName }}
-      #     VERSION=${TAG_NAME##*v}
-      #     NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
-      #     echo "::set-output name=filename::$NUPKG"
-      #     if [ ! -f package/$NUPKG ]; then
-      #       echo "File '$NUPKG' does not exist";
-      #       exit 1;
-      #     fi
+      - name: Verify package name & version
+        id: nupkg
+        if: inputs.publish
+        run: |
+          TAG_NAME=${{ inputs.tagName }}
+          VERSION=${TAG_NAME##*v}
+          NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
+          echo "::set-output name=filename::$NUPKG"
+          if [ ! -f package/$NUPKG ]; then
+            echo "File '$NUPKG' does not exist";
+            exit 1;
+          fi
       - uses: actions/upload-artifact@v3
         if: inputs.publish
         with:
