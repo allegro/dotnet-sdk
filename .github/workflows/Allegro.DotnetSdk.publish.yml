@@ -4,12 +4,12 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: 'Test scenario tags'
-        required: false
-        type: boolean
+  # workflow_dispatch:
+  #   inputs:
+  #     tags:
+  #       description: 'Test scenario tags'
+  #       required: false
+  #       type: boolean
 
 jobs:
   publish:
