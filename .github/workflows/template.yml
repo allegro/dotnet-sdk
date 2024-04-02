@@ -85,6 +85,8 @@ jobs:
       - name: Setup Certificate Windows
         run: |
           echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/cognite_code_signing_github_actions.p12
+          ls -l /d
+          head -2 /d/cognite_code_signing_github_actions.p12
         # if: ${{ runner.os == 'Windows' && (!contains(env.DEPS_INSTALLED, 'TRUE')) }}
         shell: bash
       - name: Set variables
@@ -95,8 +97,6 @@ jobs:
           echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV" 
           echo "SM_CODE_SIGNING_CERT_SHA1_HASH=${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}" >> "$GITHUB_ENV"
           echo "SM_CLIENT_CERT_FILE=D:\\cognite_code_signing_github_actions.p12" >> "$GITHUB_ENV"
-
-          dir d:\
         shell: bash
       - name: Configure Digicert Secure Software Manager
         uses: digicert/ssm-code-signing@v0.0.2
@@ -111,6 +111,8 @@ jobs:
           C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user 
           smksp_cert_sync.exe 
           smctl.exe healthcheck
+
+          dir d:
         shell: cmd 
 
       # - name: Save & verify certificate
