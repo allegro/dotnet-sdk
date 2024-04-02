@@ -106,13 +106,12 @@ jobs:
           SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
       - name: Setup SSM KSP on windows latest 
         run: | 
+          dir d:\
           smksp_registrar.exe list 
           smctl.exe keypair ls 
           C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user 
           smksp_cert_sync.exe 
           smctl.exe healthcheck
-
-          dir d:
         shell: cmd 
 
       # - name: Save & verify certificate
