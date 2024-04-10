@@ -27,7 +27,7 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
     "rollForward": "latestFeature"
   },
   "msbuild-sdks": {
-    "Allegro.DotnetSdk": "2.1.0"
+    "Allegro.DotnetSdk": "2.2.2"
   }
 }
 
@@ -97,7 +97,7 @@ Configure in `*.csproj` - project settings:
 This SDK provides some default configuration (rules severity) for selected analyzers: StyleCop, Meziantou and AsyncFixer. It doesn't actually reference them. Avoiding direct references ensures that developers can seamlessly apply and update analyzers without being tied to specific versions.
 
 To add analyzers, include the following in your `Directory.Build.props` or `Directory.Packages.props` file:
-	
+
 ```xml
 <Project>
     <!-- ... -->
