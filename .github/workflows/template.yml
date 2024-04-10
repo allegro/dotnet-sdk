@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: src/${{ inputs.projectName }}
+        working-directory: ./
     outputs:
       nupkgFilename: ${{ steps.nupkg.outputs.filename }}
     steps:
@@ -64,7 +64,7 @@ jobs:
         if: inputs.publish
         with:
           name: package
-          path: src/${{ inputs.projectName }}/package
+          path: package
   publish:
     runs-on: windows-latest
     if: inputs.publish
