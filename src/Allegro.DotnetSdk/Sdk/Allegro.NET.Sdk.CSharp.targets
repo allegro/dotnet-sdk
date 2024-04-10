@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <!-- 
-    Include stylecop configuration if we include StyleCop analyzer within this Sdk,
-    or if it was included externally as GlobalPackageReference when CPM is enabled.
+    Include stylecop configuration if StyleCop was included externally as GlobalPackageReference when CPM is enabled.
   -->
-  <ItemGroup Condition="'$(AllegroDotnetSdkEnableStyleCopConfig)' == 'true' Or @(GlobalPackageReference->WithMetadataValue('Identity','StyleCop.Analyzers')->Count()) > 0)">
+  <ItemGroup Condition="'$(AllegroDotnetSdkEnableStyleCopConfig)' == 'true' And @(GlobalPackageReference->WithMetadataValue('Identity','StyleCop.Analyzers')->Count()) > 0">
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
