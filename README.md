@@ -1,4 +1,4 @@
-# Allegro .NET SDK
+## Allegro .NET SDK
 
 ## About
 
