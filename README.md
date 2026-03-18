@@ -8,7 +8,7 @@ The SDK is versioned and published on nuget. It can be imported into dotnet proj
 
 ## Using the SDK
 
-The SDK is meant to be easily importable - only a few initial config lines are required to bring its benefits. The SDK also makes it possible to override any of its default settings. Version 2+ will work only with .NET SDK v8+.
+The SDK is meant to be easily importable - only a few initial config lines are required to bring its benefits. The SDK also makes it possible to override any of its default settings. Version 2+ will work only with .NET SDK v8+. Supported target frameworks: net8.0 and net10.0.
 
 ## Importing
 
@@ -27,7 +27,7 @@ It's necessary to include `Allegro.DotnetSdk` with the desired version in `globa
     "rollForward": "latestFeature"
   },
   "msbuild-sdks": {
-    "Allegro.DotnetSdk": "2.2.2"
+    "Allegro.DotnetSdk": "2.3.0"
   }
 }
 
