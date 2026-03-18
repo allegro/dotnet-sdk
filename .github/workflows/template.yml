@@ -33,9 +33,9 @@ jobs:
     outputs:
       nupkgFilename: ${{ steps.nupkg.outputs.filename }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             6.0.x
@@ -60,7 +60,7 @@ jobs:
             echo "File '$NUPKG' does not exist";
             exit 1;
           fi
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         if: inputs.publish
         with:
           name: package
@@ -70,12 +70,12 @@ jobs:
     if: inputs.publish
     needs: [build]
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v8
         with:
           name: package
           path: unsigned
       - name: NuGet Install
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v2
         with:
           nuget-version: latest
       - name: Setup Certificate
@@ -92,7 +92,7 @@ jobs:
           echo "SM_CLIENT_CERT_FILE=D:\\cognite_code_signing_github_actions.p12" >> "$GITHUB_ENV"
         shell: bash
       - name: Configure Digicert Secure Software Manager
-        uses: digicert/ssm-code-signing@v0.0.2
+        uses: digicert/ssm-code-signing@v1
         env:
           SM_API_KEY: ${{ env.SM_API_KEY }}
           SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
@@ -113,7 +113,7 @@ jobs:
           nuget verify -All "%cd%\signed\*.nupkg"
         shell: cmd
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             6.0.x
