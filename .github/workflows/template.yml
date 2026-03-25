@@ -102,7 +102,9 @@ jobs:
           smksp_registrar.exe list 
           smctl.exe keypair ls 
           C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user 
-          smksp_cert_sync.exe 
+          smksp_cert_sync.exe -force
+          smctl.exe windows certsync --store My
+          certutil -store My
           smctl.exe healthcheck
         shell: cmd 
       - name: Signing using Nuget
