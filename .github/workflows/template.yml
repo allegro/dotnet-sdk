@@ -75,9 +75,9 @@ jobs:
           name: package
           path: unsigned
       - name: NuGet Install
-        uses: NuGet/setup-nuget@v2
+        uses: NuGet/setup-nuget@v3
         with:
-          nuget-version: latest
+          nuget-version: "6.11"
       - name: Setup Certificate
         run: |
           echo "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" | base64 --decode > /d/cognite_code_signing_github_actions.p12
@@ -109,8 +109,9 @@ jobs:
         run: |
           dir "%cd%\unsigned"
           mkdir "%cd%\signed"
-          nuget sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
-          nuget verify -All "%cd%\signed\*.nupkg"
+          dir C:\hostedtoolcache\windows\nuget.exe\
+          C:\hostedtoolcache\windows\nuget.exe\6.11.1\x64/nuget.exe sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
+          C:\hostedtoolcache\windows\nuget.exe\6.11.1\x64/nuget.exe verify -All "%cd%\signed\*.nupkg"
         shell: cmd
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
