@@ -110,8 +110,8 @@ jobs:
           dir "%cd%\unsigned"
           mkdir "%cd%\signed"
           dir C:\hostedtoolcache\windows\nuget.exe\
-          C:\hostedtoolcache\windows\nuget.exe\6.11.1\x64/nuget.exe sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
-          C:\hostedtoolcache\windows\nuget.exe\6.11.1\x64/nuget.exe verify -All "%cd%\signed\*.nupkg"
+          %NUGET% sign "%cd%\unsigned\*.nupkg" -Timestamper http://timestamp.digicert.com -outputdirectory "%cd%\signed" -CertificateFingerprint ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }} -HashAlgorithm SHA256 -Verbosity detailed -Overwrite
+          %NUGET% verify -All "%cd%\signed\*.nupkg"
         shell: cmd
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
