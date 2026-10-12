@@ -22,8 +22,6 @@ on:
         required: false
       SM_CODE_SIGNING_CERT_SHA1_HASH:
         required: false
-      nugetApiKey:
-        required: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -55,7 +53,7 @@ jobs:
           TAG_NAME=${{ inputs.tagName }}
           VERSION=${TAG_NAME##*v}
           NUPKG="${{ inputs.projectName }}.${VERSION}.nupkg"
-          echo "::set-output name=filename::$NUPKG"
+          echo "filename=$NUPKG" >> "$GITHUB_OUTPUT"
           if [ ! -f package/$NUPKG ]; then
             echo "File '$NUPKG' does not exist";
             exit 1;
@@ -69,6 +67,10 @@ jobs:
     runs-on: windows-latest
     if: inputs.publish
     needs: [build]
+    environment: nuget-production
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/download-artifact@v8
         with:
@@ -119,5 +121,10 @@ jobs:
           dotnet-version: |
             8.0.x
             10.0.x
+      - name: NuGet login
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
       - name: Push package
-        run: dotnet nuget push signed/${{needs.build.outputs.nupkgFilename}} --api-key ${{ secrets.nugetApiKey }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "signed/${{ needs.build.outputs.nupkgFilename }}" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
