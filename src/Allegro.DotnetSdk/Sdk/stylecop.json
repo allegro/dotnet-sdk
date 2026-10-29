@@ -11,7 +11,7 @@
       ]
     },
     "layoutRules": {
-      "newlineAtEndOfFile": "omit"
+      "newlineAtEndOfFile": "allow"
     },
     "documentationRules": {
       "xmlHeader": false,
